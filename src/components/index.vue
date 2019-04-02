@@ -9,7 +9,7 @@
           <h2>大麦后台系统</h2>
         </el-col>
         <el-col :span="4">
-          <el-button type="danger" round class="logout">登出</el-button>
+          <el-button type="danger" round class="logout" @click="logout">登出</el-button>
         </el-col>
       </el-row>
     </el-header>
@@ -31,19 +31,36 @@
               <span>用户管理</span>
             </template>
             <el-menu-item-group>
-             <el-menu-item index="1-1"> <i class=" el-icon-menu"></i> <span> 用户列表</span></el-menu-item>
+              <el-menu-item index="1-1">
+                <i class="el-icon-menu"></i>
+                <span>用户列表</span>
+              </el-menu-item>
             </el-menu-item-group>
           </el-submenu>
         </el-menu>
       </el-aside>
-      <el-main class="my-main">Main</el-main>
+      <el-main class="my-main">
+        <router-view></router-view>
+      </el-main>
     </el-container>
   </el-container>
 </template>
 
 <script>
 export default {
-  name: "index"
+  name: "index",
+  methods: {
+    logout() {
+      window.sessionStorage.removeItem("token");
+      this.$router.push("/login");
+    }
+  },
+  beforeCreate() {
+    if (!(window.sessionStorage.getItem("token"))) {
+          this.$router.push("/login");
+      this.$message.error("请登入");
+    }
+  }
 };
 </script>
 
