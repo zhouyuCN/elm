@@ -7,7 +7,7 @@ export default {
 
 
         // 设置基地址
-        axios.defaults.baseURL = "http://localhost:8888/api/private/v1/";
+        axios.defaults.baseURL = "https://elm.cangdu.org/";
         //设置拦截器
         //添加一个获信息拦截器
         axios.interceptors.request.use(function (config) {
