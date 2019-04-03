@@ -34,28 +34,6 @@ export default {
   name: "userList",
   data() {
     return {
-      tableData: [
-        {
-          date: "2016-05-02",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄"
-        },
-        {
-          date: "2016-05-04",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1517 弄"
-        },
-        {
-          date: "2016-05-01",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1519 弄"
-        },
-        {
-          date: "2016-05-03",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1516 弄"
-        }
-      ],
       usersList: [],
       count: 0,
       pageSize: "",
@@ -69,11 +47,11 @@ export default {
     async showData(){
    //数据获取
     let res = await this.$axios.get("v1/users/list",{params:this.sendData} );
-    console.log(res);
+    // console.log(res);
     this.usersList = res.data;
     //总页数
     let rea = await this.$axios.get("v1/users/count");
-    console.log(rea);
+    // console.log(rea);
     this.count = rea.data.count;
     },
     handleSizeChange(size) {

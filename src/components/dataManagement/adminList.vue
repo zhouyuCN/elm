@@ -5,14 +5,14 @@
     <div class="table-box">
       <el-table
         class="my-table"
-        :data="tableData"
+        :data="adminList"
         style="width: 100%"
         :header-cell-style="{background:'#eef1f6'}"
       >
-        <el-table-column prop="date" label="姓名" width="180"></el-table-column>
-        <el-table-column prop="name" label="注册日期" width="180"></el-table-column>
-        <el-table-column prop="address" label="地址"></el-table-column>
-        <el-table-column prop="address" label="权限"></el-table-column>
+        <el-table-column prop="user_name" label="姓名" width="180"></el-table-column>
+        <el-table-column prop="create_time" label="注册日期" width="180"></el-table-column>
+        <el-table-column prop="city" label="地址"></el-table-column>
+        <el-table-column prop="admin" label="权限"></el-table-column>
       </el-table>
       <!-- 页码 -->
       <el-pagination
@@ -20,9 +20,9 @@
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
         :current-page.sync="currentPage1"
-        :page-size="100"
+        :page-size="sendData.limit"
         layout="total, prev, pager, next"
-        :total="1000"
+        :total="count"
         class="my-page"
       ></el-pagination>
     </div>
@@ -34,30 +34,40 @@ export default {
   name: "userList",
   data() {
     return {
-      tableData: [
-        {
-          date: "2016-05-02",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄"
-        },
-        {
-          date: "2016-05-04",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1517 弄"
-        },
-        {
-          date: "2016-05-01",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1519 弄"
-        },
-        {
-          date: "2016-05-03",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1516 弄"
-        }
-      ]
+      count:'',
+      adminList: [],
+      sendData: {
+        limit: 20,
+        offset: 0
+      }
     };
-  }
+  },
+  methods: {
+   async showData(){
+     let res = await this.$axios.get('admin/all',{params:this.sendData})
+    //  console.log(res);
+    this.adminList=res.data.data;
+       let rea = await this.$axios.get('admin/count')
+     this.count=rea.data.count;
+    },
+     handleSizeChange(size) {
+     this.sendData.limit=size;
+      this.showData();
+    },
+    handleCurrentChange(num) {
+      if(num>1){
+    this.sendData.offset=num*20
+      }else(
+        this.sendData.offset=20
+      )
+ 
+       this.showData();
+    }
+  },
+
+  created() {
+    this.showData();
+  },
 };
 </script>
 

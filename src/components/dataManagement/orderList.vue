@@ -3,31 +3,31 @@
     <my-bread breadOne="数据管理" breadTwo="订单列表"></my-bread>
     <!-- 表格 -->
     <div class="table-box">
-      <el-table :data="tableData" style="width: 100%">
+      <el-table :data="orderList" style="width: 100%">
         <el-table-column type="expand">
           <template slot-scope="props">
             <el-form label-position="left" inline class="demo-table-expand">
               <el-form-item label="用户名">
-                <span>{{ props.row.name }}</span>
+                <span>{{ props.row.user_id }}</span>
               </el-form-item>
               <el-form-item label="店铺名称">
-                <span>{{ props.row.shop }}</span>
+                <span>{{ props.row.restaurant_name }}</span>
               </el-form-item>
               <el-form-item label="收货地址">
-                <span>{{ props.row.id }}</span>
+                <span></span>
               </el-form-item>
               <el-form-item label="店铺 ID">
-                <span>{{ props.row.shopId }}</span>
+                <span>{{ props.row.restaurant_id }}</span>
               </el-form-item>
               <el-form-item label="店铺地址">
-                <span>{{ props.row.category }}</span>
+                <span></span>
               </el-form-item>
             </el-form>
           </template>
         </el-table-column>
-        <el-table-column label="订单ID" prop="id"></el-table-column>
-        <el-table-column label="总价格" prop="name"></el-table-column>
-        <el-table-column label="订单状态" prop="desc"></el-table-column>
+        <el-table-column label="订单ID" prop="unique_id"></el-table-column>
+        <el-table-column label="总价格" prop="total_amount"></el-table-column>
+        <el-table-column label="订单状态" prop="status_bar.title"></el-table-column>
       </el-table>
       <!-- 页码 -->
       <el-pagination
@@ -35,9 +35,9 @@
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
         :current-page.sync="currentPage1"
-        :page-size="100"
+        :page-size="sendData.limit"
         layout="total, prev, pager, next"
-        :total="1000"
+        :total="count"
         class="my-page"
       ></el-pagination>
     </div>
@@ -49,60 +49,56 @@ export default {
   name: "shopLsit",
   data() {
     return {
-      tableData: [
-        {
-          id: "12987122",
-          name: "好滋好味鸡蛋仔",
-          category: "江浙小吃、小吃零食",
-          desc: "荷兰优质淡奶，奶香浓而不腻",
-          address: "上海市普陀区真北路",
-          shop: "王小虎夫妻店",
-          shopId: "10333"
-        },
-        {
-          id: "12987123",
-          name: "好滋好味鸡蛋仔",
-          category: "江浙小吃、小吃零食",
-          desc: "荷兰优质淡奶，奶香浓而不腻",
-          address: "上海市普陀区真北路",
-          shop: "王小虎夫妻店",
-          shopId: "10333"
-        },
-        {
-          id: "12987125",
-          name: "好滋好味鸡蛋仔",
-          category: "江浙小吃、小吃零食",
-          desc: "荷兰优质淡奶，奶香浓而不腻",
-          address: "上海市普陀区真北路",
-          shop: "王小虎夫妻店",
-          shopId: "10333"
-        },
-        {
-          id: "12987126",
-          name: "好滋好味鸡蛋仔",
-          category: "江浙小吃、小吃零食",
-          desc: "荷兰优质淡奶，奶香浓而不腻",
-          address: "上海市普陀区真北路",
-          shop: "王小虎夫妻店",
-          shopId: "10333"
-        }
-      ]
+      orderList: [],
+        sendData: {
+        limit: 20,
+        offset: 0
+      },
+      count:''
     };
+  },
+  methods: {
+    async showData() {
+      //数据获取
+      let res = await this.$axios.get("bos/orders", {
+        params: this.sendData
+      });
+      // console.log(res);
+      this.orderList = res.data;
+      //总页数
+      let rea = await this.$axios.get("bos/orders/count");
+      // console.log(rea);
+      this.count = rea.data.count;
+    },
+    handleSizeChange(size) {
+      this.sendData.limit = size;
+      this.showData();
+    },
+    handleCurrentChange(num) {
+      if (num > 1) {
+        this.sendData.offset = num * 20;
+      } else this.sendData.offset = 20;
+
+      this.showData();
+    }
+  },
+  async created() {
+    this.showData();
   }
 };
 </script>
 
 <style lang="scss">
-  .demo-table-expand {
-    font-size: 0;
-  }
-  .demo-table-expand label {
-    width: 90px;
-    color: #99a9bf;
-  }
-  .demo-table-expand .el-form-item {
-    margin-right: 0;
-    margin-bottom: 0;
-    width: 50%;
-  }
+.demo-table-expand {
+  font-size: 0;
+}
+.demo-table-expand label {
+  width: 90px;
+  color: #99a9bf;
+}
+.demo-table-expand .el-form-item {
+  margin-right: 0;
+  margin-bottom: 0;
+  width: 50%;
+}
 </style>
