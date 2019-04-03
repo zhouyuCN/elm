@@ -1,43 +1,136 @@
 <template>
   <el-container class="my-container">
-    <el-header class="my-header">
-      <el-row>
-        <el-col :span="4">
-          <img src="../assets/images/logo.png" alt>
-        </el-col>
-        <el-col :span="16">
-          <h2>大麦后台系统</h2>
-        </el-col>
-        <el-col :span="4">
-          <el-button type="danger" round class="logout" @click="logout">登出</el-button>
-        </el-col>
-      </el-row>
-    </el-header>
     <el-container>
       <!-- 导航区域 -->
-      <el-aside width="200px" class="my-aside">
-        <el-menu
-          default-active="2"
-          class="el-menu-vertical-demo"
-          @open="handleOpen"
-          @close="handleClose"
-          background-color="#545c64"
-          text-color="#fff"
-          active-text-color="#ffd04b"
-        >
-          <el-submenu index="1">
-            <template slot="title">
-              <i class="el-icon-location"></i>
-              <span>用户管理</span>
-            </template>
-            <el-menu-item-group>
-              <el-menu-item index="1-1">
-                <i class="el-icon-menu"></i>
-                <span>用户列表</span>
+      <el-aside width="320px" class="my-aside">
+        <el-row>
+          <el-col :span="24">
+            <el-menu
+              default-active="2"
+              class="el-menu-vertical-demo"
+              @open="handleOpen"
+              @close="handleClose"
+              background-color="#324157"
+              text-color="#fff"
+              active-text-color="#ffd04b"
+              router
+            >
+              <!-- 首页 -->
+              <el-menu-item index="manage">
+                <i class="el-icon-location"></i>
+                <span>首页</span>
               </el-menu-item>
-            </el-menu-item-group>
-          </el-submenu>
-        </el-menu>
+              <!-- 数据管理 -->
+              <el-submenu index="2">
+                <template slot="title">
+                  <i class="el-icon-location"></i>
+                  <span>数据管理</span>
+                </template>
+                <el-menu-item-group>
+                  <el-menu-item index="userList">
+                    <i class="el-icon-menu"></i>
+                    <span>用户列表</span>
+                  </el-menu-item>
+                </el-menu-item-group>
+                <el-menu-item-group>
+                  <el-menu-item index="shopList">
+                    <i class="el-icon-menu"></i>
+                    <span>商家列表</span>
+                  </el-menu-item>
+                </el-menu-item-group>
+                <el-menu-item-group>
+                  <el-menu-item index="foodList">
+                    <i class="el-icon-menu"></i>
+                    <span>食品列表</span>
+                  </el-menu-item>
+                </el-menu-item-group>
+                <el-menu-item-group>
+                  <el-menu-item index="orderList">
+                    <i class="el-icon-menu"></i>
+                    <span>订单列表</span>
+                  </el-menu-item>
+                </el-menu-item-group>
+                <el-menu-item-group>
+                  <el-menu-item index="adminList">
+                    <i class="el-icon-menu"></i>
+                    <span>管理员列表</span>
+                  </el-menu-item>
+                </el-menu-item-group>
+              </el-submenu>
+              <!-- 添加数据 -->
+              <el-submenu index="3">
+                <template slot="title">
+                  <i class="el-icon-location"></i>
+                  <span>添加数据</span>
+                </template>
+                <el-menu-item-group>
+                  <el-menu-item index="addStop">
+                    <i class="el-icon-menu"></i>
+                    <span>添加店铺</span>
+                  </el-menu-item>
+                </el-menu-item-group>
+                <el-menu-item-group>
+                  <el-menu-item index="2-1">
+                    <i class="el-icon-menu"></i>
+                    <span>添加商品</span>
+                  </el-menu-item>
+                </el-menu-item-group>
+              </el-submenu>
+              <!-- 图表 -->
+              <el-submenu index="4">
+                <template slot="title">
+                  <i class="el-icon-location"></i>
+                  <span>图表</span>
+                </template>
+                <el-menu-item-group>
+                  <el-menu-item index="4-1">
+                    <i class="el-icon-menu"></i>
+                    <span>用户分析</span>
+                  </el-menu-item>
+                </el-menu-item-group>
+              </el-submenu>
+              <!-- 编辑 -->
+              <el-submenu index="4">
+                <template slot="title">
+                  <i class="el-icon-location"></i>
+                  <span>编辑</span>
+                </template>
+                <el-menu-item-group>
+                  <el-menu-item index="4-1">
+                    <i class="el-icon-menu"></i>
+                    <span>文本编辑</span>
+                  </el-menu-item>
+                </el-menu-item-group>
+              </el-submenu>
+              <!-- 设置 -->
+              <el-submenu index="4">
+                <template slot="title">
+                  <i class="el-icon-location"></i>
+                  <span>设置</span>
+                </template>
+                <el-menu-item-group>
+                  <el-menu-item index="4-1">
+                    <i class="el-icon-menu"></i>
+                    <span>管理员设置</span>
+                  </el-menu-item>
+                </el-menu-item-group>
+              </el-submenu>
+              <!-- 说明 -->
+              <el-submenu index="4">
+                <template slot="title">
+                  <i class="el-icon-location"></i>
+                  <span>说明</span>
+                </template>
+                <el-menu-item-group>
+                  <el-menu-item index="4-1">
+                    <i class="el-icon-menu"></i>
+                    <span>说明</span>
+                  </el-menu-item>
+                </el-menu-item-group>
+              </el-submenu>
+            </el-menu>
+          </el-col>
+        </el-row>
       </el-aside>
       <el-main class="my-main">
         <router-view></router-view>
@@ -49,18 +142,7 @@
 <script>
 export default {
   name: "index",
-  methods: {
-    logout() {
-      window.sessionStorage.removeItem("token");
-      this.$router.push("/login");
-    }
-  },
-  beforeCreate() {
-    if (!(window.sessionStorage.getItem("token"))) {
-          this.$router.push("/login");
-      this.$message.error("请登入");
-    }
-  }
+
 };
 </script>
 
@@ -68,23 +150,20 @@ export default {
 <style  lang="scss">
 .my-container {
   height: 100%;
-  .my-header {
-    background-color: #fff;
-    box-shadow: 0 1px 3px #ccc;
-    h2 {
-      text-align: center;
-      line-height: 60px;
-      margin: 0;
-    }
-    .logout {
-      margin: 10px 0 0 220px;
-    }
-  }
+
   .my-aside {
-    background-color: #545c64;
+    width: 320px;
+    background-color: #324157;
+  }
+  //实现滚动条隐藏
+  .my-aside::-webkit-scrollbar {
+    display: none;
   }
   .my-main {
-    background-color: pink;
+    padding: 0;
+  }
+  .my-main::-webkit-scrollbar {
+    display: none;
   }
 }
 </style>

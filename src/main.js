@@ -8,30 +8,14 @@ import './assets/base.scss'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 Vue.use(ElementUI);
-//导入 Axios
-import axios from 'axios';
-//抽取 Axios
-Vue.prototype.$axios = axios;
-// 设置基地址
-axios.defaults.baseURL = "http://localhost:8888/api/private/v1/";
-//设置拦截器
-//添加一个获信息拦截器
-axios.interceptors.request.use(function (config) {
-  
-  config.headers.Authorization = window.sessionStorage.getItem('token');
-  
-  return config;
-}, function (error) {
-  return Promise.reject(error);
-});
+//导入面包屑
+import myBread from './components/my-bread.vue';
+Vue.component('my-bread', myBread);
 
-//响应信息拦截器
-axios.interceptors.response.use(function (response) {
-  return response;
-}, function (error) {
-  return Promise.reject(error);
-});
+//导入myaxios
 
+import myaxios from './myaxios.js';
+Vue.use(myaxios);
 
 Vue.config.productionTip = false
 import router from './router.js'

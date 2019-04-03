@@ -1,26 +1,28 @@
 <template>
   <div class="loginBox">
-    <div class="loginForm">
-      <h2>用户登入</h2>
-      <el-form
-        :label-position="labelPosition"
-        label-width="80px"
-        :rules="rules"
-        ref="userlist"
-        :model="userlist"
-      >
-        <el-form-item label="用户名称" prop="username">
-          <el-input v-model="userlist.username"></el-input>
-        </el-form-item>
-        <el-form-item label="登入密码" prop="password">
-          <el-input v-model="userlist.password"></el-input>
-        </el-form-item>
-        <el-form-item class="login-btn">
-          <el-button type="primary" @click="userLogin('userlist')">登入</el-button>
-          <el-button type="danger">重置</el-button>
-        </el-form-item>
-      </el-form>
-    </div>
+    <transition name="el-zoom-in-center">
+      <div class="loginForm" v-show="show">
+        <h2>elm后台管理系统</h2>
+        <el-form
+          :label-position="labelPosition"
+          label-width="80px"
+          :rules="rules"
+          ref="userlist"
+          :model="userlist"
+        >
+          <el-form-item label="用户名称" prop="username">
+            <el-input v-model="userlist.username"></el-input>
+          </el-form-item>
+          <el-form-item label="登入密码" prop="password">
+            <el-input v-model="userlist.password"></el-input>
+          </el-form-item>
+          <el-form-item class="login-btn">
+            <el-button type="primary" @click="userLogin('userlist')">登入</el-button>
+            <el-button type="danger" @click="resetForm('userlist')">重置</el-button>
+          </el-form-item>
+        </el-form>
+      </div>
+    </transition>
   </div>
 </template>
 
@@ -31,6 +33,7 @@ export default {
     return {
       //表单显示方式
       labelPosition: "top",
+      show: false,
       userlist: {
         username: "",
         password: ""
@@ -51,14 +54,20 @@ export default {
   methods: {
     async userLogin() {
       let res = await this.$axios.post("login", this.userlist);
-      if(res.data.meta.status==200){
-          this.$message.success(res.data.meta.msg);
-          window.sessionStorage.setItem('token',res.data.data.token);
-          this.$router.push('/');
-      }else{
-          this.$message.error(res.data.meta.msg);
+      if (res.data.meta.status == 200) {
+        this.$message.success(res.data.meta.msg);
+        window.sessionStorage.setItem("token", res.data.data.token);
+        this.$router.push("/");
+      } else {
+        this.$message.error(res.data.meta.msg);
       }
+    },
+    resetForm(userlist) {
+      this.$refs[userlist].resetFields();
     }
+  },
+  mounted() {
+    this.show = true;
   }
 };
 </script>
